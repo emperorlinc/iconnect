@@ -1,0 +1,14 @@
+<h1><a href="/">ICON</a> I-CONNECT</h1>
+<form class="" action="{% url 'home' %}" method="GET">
+  <input type="text" name="q" value="" placeholder="Search Rooms...">
+</form>
+{% if request.user.is_authenticated %}
+{% for profile in profiles %}
+<span><a href="{% url 'profile' profile.id %}">Profile</a></span>
+{% endfor %}
+<p>Welcome {{request.user|capfirst}}</p>
+<a href="{% url 'logout' %}">Logout</a>
+{% else %}
+<a href="{% url 'login' %}">Login</a>
+{% endif %}
+<hr>

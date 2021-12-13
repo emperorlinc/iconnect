@@ -1,0 +1,19 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<span><h3>{{room.name|title}}</h3> <p>created by {{room.host|capfirst}}</p> <small>@{{room.topic.name|title}}</small></span>
+<p>{{room.description|capfirst}}</p><hr>
+{% for message in messages %}
+<div class="">
+  {{message.host.username}}:<br>
+  {{message.body}}<hr>
+</div>
+{% endfor %}
+<div class="">
+  <form class="" action="" method="POST">
+    {% csrf_token %}
+    <input type="text" name="message" value="" placeholder="Type a message"><input type="submit" name="submit" value="Send">
+  </form>
+</div>
+{% endblock content %}

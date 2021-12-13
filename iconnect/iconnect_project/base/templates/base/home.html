@@ -1,0 +1,61 @@
+{% extends "main.html" %}
+
+
+{% block content %}
+<style media="screen">
+  .home-container{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr
+  }
+</style>
+<div class="home-container">
+  <div class="">
+    <h2>Browse Topics</h2>
+    {% if request.user.is_authenticated %}
+    <span><a href="{% url 'create-topic' %}">Create Topic</a>
+      {% endif %}
+      <small> {{topics_count}} topics available</small><hr></span>
+    <div class="">
+      <a href="{% url 'home' %}"><p>All</p></a><hr>
+    </div>
+
+    {% for topic in topics %}
+    <div class="">
+      <a href="{% url 'home' %}?q={{topic.name}}"><p>{{topic.name|title}}</p></a><hr>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="">
+    <h2>News Feeds</h2>
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'create-post' %}">Create Post</a>
+    {% endif %}
+    <small>{{display_count}} posts available</small><hr>
+    {% for display in displays %}
+    <div class="">
+      {% if request.user == display.host %}
+      <a href="{% url 'edit-post' display.id %}">Edit Post</a>
+      {% endif %}
+      <a href="{% url 'blog' display.id %}"><h3>{{display.title|title}}</h3></a>
+      <span>by {{display.host.username}}</span>  <small>{{display.created|timesince}} ago</small>
+      <p>{{display.blog|truncatechars:150|capfirst}}</p>
+      <small>@{{display.room}}</small>
+      <hr>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="">
+    <h2>Rooms</h2>
+    {% if request.user.is_authenticated %}
+    <span><a href="{% url 'create-room' %}">Create Room</a>
+      {% endif %}
+      <small> {{rooms_count}} rooms available</small></span><hr>
+    {% for room in rooms %}
+    <a href="{% url 'room' room.id %}"><h3>{{room.name|title}}</h3></a><span>by {{room.host.username}}</span><br>
+    <small>@{{room.topic|title}}</small><hr>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

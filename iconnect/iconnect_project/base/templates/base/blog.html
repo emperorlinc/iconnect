@@ -1,0 +1,11 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<div class="">
+  <h2>{{displays.name}}</h2>
+  <span>by {{display.host.username}}</span>  <small>{{display.created|timesince}} ago</small>
+  <p>{{display.blog|capfirst}}</p>
+</div>
+
+{% endblock content %}
