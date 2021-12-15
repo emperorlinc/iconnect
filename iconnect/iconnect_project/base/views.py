@@ -96,16 +96,16 @@ def create_post_view(request, *args, **kwargs):
 @login_required(login_url="login")
 def edit_post_view(request, pk, *args, **kwargs):
     posts = Display.objects.get(id=pk)
-    forms = DisplayForm(instance=posts)
+    form = DisplayForm(instance=posts)
     if request.method == "POST":
-        forms = DisplayForm(request.POST)
-        if forms.is_vaild():
-            forms.save()
+        form = DisplayForm(request.POST, instance=posts)
+        if form.is_vaild():
+            form.save()
             return redirect("home")
     if request.user != posts.host:
         return HttpResponse("You can't edit someone else's post")
-    context = {"forms": forms}
-    return render(request, "base/edit_post.html", context)
+    context = {"form": form}
+    return render(request, "base/create_blog.html", context)
 
 def profile_view(request, pk, *args, **kwargs):
     profiles = Profile.objects.get(id=pk)
