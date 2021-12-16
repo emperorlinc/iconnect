@@ -99,13 +99,22 @@ def edit_post_view(request, pk, *args, **kwargs):
     form = DisplayForm(instance=posts)
     if request.method == "POST":
         form = DisplayForm(request.POST, instance=posts)
-        if form.is_vaild():
+        if form.is_valid():
             form.save()
             return redirect("home")
     if request.user != posts.host:
         return HttpResponse("You can't edit someone else's post")
     context = {"form": form}
     return render(request, "base/create_blog.html", context)
+
+@login_required(login_url="login")
+def delete_post_view(request, pk, *args, **kwargs):
+    post = Display.objects.get(id=pk)
+    if request.method == "POST":
+        post.delete()
+        return redirect("home")
+    context = {"obj": post}
+    return render(request, "base/delete.html", context)
 
 def profile_view(request, pk, *args, **kwargs):
     profiles = Profile.objects.get(id=pk)

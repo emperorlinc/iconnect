@@ -17,4 +17,6 @@ urlpatterns = [
     path("create_topic", views.create_topic_view, name="create-topic"),
 
     path("edit_post/<str:pk>/", views.edit_post_view, name="edit-post"),
+
+    path("delete_post/<str:pk>/", views.delete_post_view, name="delete-post"),
 ]
