@@ -30,7 +30,7 @@ class Room(models.Model):
 
 class Message(models.Model):
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    # topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     body = models.CharField(max_length=9999)
     updated = models.DateTimeField(auto_now=True)

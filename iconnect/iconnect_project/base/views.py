@@ -40,7 +40,15 @@ def topic_view(request, pk, *args, **kwargs):
 
 def room_view(request, pk, *args, **kwargs):
     room = Room.objects.get(id=pk)
-    messages = Message.objects.get(id=pk)
+    messages = room.message_set.all()
+
+    if request.method == "POST":
+        message = Message.objects.create(
+            host = request.user,
+            room = room,
+            body = request.POST.get("body"),
+        )
+        return redirect("room", pk=room.id)
     context = {"messages": messages, "room": room}
     return render(request, "base/room.html", context)
 
@@ -122,6 +130,8 @@ def profile_view(request, pk, *args, **kwargs):
     return render(request, "base/profile.html", context)
 
 def login_view(request, *args, **kwargs):
+    if request.user.is_authenticated():
+        return redirect("home")
     if request.method == "POST":
         username = request.POST["username"].lower()
         password = request.POST["password"]

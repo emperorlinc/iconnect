@@ -2,18 +2,24 @@
 
 {% block content %}
 
-<span><h3>{{room.name|title}}</h3> <p>created by {{room.host|capfirst}}</p> <small>@{{room.topic.name|title}}</small></span>
+<span><h1>{{room.name|title}}</h1> <p>created by {{room.host|capfirst}}</p> <small>@{{room.topic.name|title}}</small></span>
 <p>{{room.description|capfirst}}</p><hr>
-{% for message in messages %}
-<div class="">
-  {{message.host.username}}:<br>
-  {{message.body}}<hr>
+<div class="comment-wrapper">
+  <h3>Conversation</h3>
+  <hr>
+  {% for message in messages %}
+  <div class="">
+    <small>@{{message.host.username}}  {{message.created|timesince}} ago</small><br>
+    {{message.body}}<hr>
+  </div>
+  {% endfor %}
 </div>
-{% endfor %}
-<div class="">
+{% if request.user.is_authenticated %}
+<div class="comment-form">
   <form class="" action="" method="POST">
     {% csrf_token %}
-    <input type="text" name="message" value="" placeholder="Type a message"><input type="submit" name="submit" value="Send">
+    <input type="text" name="body" value="" placeholder="Type a message"><input type="submit" name="submit" value="Send">
   </form>
 </div>
+{% endif %}
 {% endblock content %}
