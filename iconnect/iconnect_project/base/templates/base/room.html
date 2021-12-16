@@ -9,6 +9,10 @@
   <hr>
   {% for message in messages %}
   <div class="">
+    {% if request.user == message.host %}
+    <a href="{% url 'delete-message' message.id %}">Delete message</a>
+    <a href="{% url 'edit-message' message.id %}">Edit message</a><br>
+    {% endif %}
     <small>@{{message.host.username}}  {{message.created|timesince}} ago</small><br>
     {{message.body}}<hr>
   </div>

@@ -130,8 +130,8 @@ def profile_view(request, pk, *args, **kwargs):
     return render(request, "base/profile.html", context)
 
 def login_view(request, *args, **kwargs):
-    if request.user.is_authenticated():
-        return redirect("home")
+    # if request.user.is_authenticated():
+    #     return redirect("home")
     if request.method == "POST":
         username = request.POST["username"].lower()
         password = request.POST["password"]
@@ -167,3 +167,27 @@ def register_view(request, *args, **kwargs):
 def logout_view(request, *args, **kwargs):
     logout(request)
     return redirect("home")
+
+@login_required(login_url="login")
+def delete_message_view(request, pk, *args, **kwargs):
+    message = Message.objects.get(id=pk)
+    if request.method == "POST":
+        message.delete()
+        return redirect("room", pk=message.room.id)
+    context = {"obj": message}
+    return render(request, "base/delete.html", context)
+
+@login_required(login_url="login")
+def edit_message_view(request, pk, *args, **kwargs):
+    message = Message.objects.get(id=pk)
+    form = MessageForm(instance=message)
+    if request.method == "POST":
+        form = MessageForm(request.POST, instance=message)
+        if form.is_valid():
+            form.save()
+            return redirect("room", pk=message.room.id)
+        else:
+            messages.error(request, "An error occurred when updating the message")
+            return redirect("room", pk=message.room.id)
+    context = {"form": form}
+    return render(request, "base/edit_message.html", context)
