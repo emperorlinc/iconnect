@@ -36,7 +36,7 @@
       <a href="{% url 'blog' display.id %}"><h3>{{display.title|title}}</h3></a>
       {% if request.user == display.host %}
       <a href="{% url 'edit-post' display.id %}">Edit Post</a>
-      <a href="{% url 'delete-post' display.id %}">Delete Post</a>
+      <a href="{% url 'delete-post' display.id %}">Delete Post</a><br>
       {% endif %}
       <span>by {{display.host.username}}</span>  <small>{{display.created|timesince}} ago</small>
       <p>{{display.blog|truncatechars:150|capfirst}}</p>

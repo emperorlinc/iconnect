@@ -58,7 +58,8 @@ class Display(models.Model):
 
 class Profile(models.Model):
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    bio = models.CharField(max_length=100)
+    nickname = models.CharField(max_length=100)
+    bio = models.TextField(max_length=300)
     # image =
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)

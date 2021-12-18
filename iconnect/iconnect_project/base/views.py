@@ -52,9 +52,20 @@ def room_view(request, pk, *args, **kwargs):
     context = {"messages": messages, "room": room}
     return render(request, "base/room.html", context)
 
-# def message_view(request, pk, *args, **kwargs):
-#     form = MessageForm()
-
+@login_required(login_url="login")
+def edit_room_view(request, pk, *args, **kwargs):
+    room = Room.objects.get(id=pk)
+    form = RoomForm(instance=room)
+    if request.method == "POST":
+        form = RoomForm(request.POST, instance=room)
+        if form.is_valid():
+            form.save()
+            return redirect("room", pk=room.id)
+        else:
+            messsages.error(request, "An error occurred")
+            return redirect("room", pk=room.id)
+    context = {"form": form}
+    return render(request, "base/edit_room.html", context)
 
 @login_required(login_url="login")
 def create_room_view(request, *args, **kwargs):
@@ -125,13 +136,29 @@ def delete_post_view(request, pk, *args, **kwargs):
     return render(request, "base/delete.html", context)
 
 def profile_view(request, pk, *args, **kwargs):
-    profiles = Profile.objects.get(id=pk)
-    context = {"profiles": profiles}
+    profile = Profile.objects.get(id=pk)
+    context = {"profile": profile}
     return render(request, "base/profile.html", context)
+
+@login_required(login_url="login")
+def edit_profile_view(request, pk, *args, **kwargs):
+    profile = Profile.objects.get(id=pk)
+    form = ProfileForm(instance=profile)
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect("profile", pk=profile.host.id)
+        else:
+            message.error(request, "An error occurred")
+            return redirect("profile", pk=profile.host.id)
+    context = {"form": form}
+    return render(request, "base/edit_profile.html", context)
 
 def login_view(request, *args, **kwargs):
     # if request.user.is_authenticated():
     #     return redirect("home")
+    page = "login"
     if request.method == "POST":
         username = request.POST["username"].lower()
         password = request.POST["password"]
@@ -146,7 +173,7 @@ def login_view(request, *args, **kwargs):
             return redirect("home")
         else:
             messages.error(request, "Username or Password does not exist")
-    context = {}
+    context = {"page": page}
     return render(request, "base/login.html", context)
 
 def register_view(request, *args, **kwargs):
@@ -162,7 +189,7 @@ def register_view(request, *args, **kwargs):
         else:
             messages.error(request, "An error occurred")
     context = {"form": form}
-    return render(request, "base/register.html", context)
+    return render(request, "base/login.html", context)
 
 def logout_view(request, *args, **kwargs):
     logout(request)

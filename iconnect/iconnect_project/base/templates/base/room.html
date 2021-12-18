@@ -3,7 +3,11 @@
 {% block content %}
 
 <span><h1>{{room.name|title}}</h1> <p>created by {{room.host|capfirst}}</p> <small>@{{room.topic.name|title}}</small></span>
-<p>{{room.description|capfirst}}</p><hr>
+<p>{{room.description|capfirst}}</p><br>
+{% if request.user == room.host %}
+<a href="{% url 'edit-room' room.id %}">edit room</a>
+{% endif %}
+<hr>
 <div class="comment-wrapper">
   <h3>Conversation</h3>
   <hr>
@@ -13,7 +17,7 @@
     <a href="{% url 'delete-message' message.id %}">Delete message</a>
     <a href="{% url 'edit-message' message.id %}">Edit message</a><br>
     {% endif %}
-    <small>@{{message.host.username}}  {{message.created|timesince}} ago</small><br>
+    <small>@<a href="{% url 'profile' message.host.id %}">{{message.host.username}}</a>  {{message.created|timesince}} ago</small><br>
     {{message.body}}<hr>
   </div>
   {% endfor %}
