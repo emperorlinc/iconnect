@@ -68,6 +68,15 @@ def edit_room_view(request, pk, *args, **kwargs):
     return render(request, "base/edit_room.html", context)
 
 @login_required(login_url="login")
+def delete_room_view(request, pk, *args, **kwargs):
+    room = Room.objects.get(id=pk)
+    if request.method == "POST":
+        room.delete()
+        return redirect("home")
+    context = {"obj": room}
+    return render(request, "base/delete.html", context)
+
+@login_required(login_url="login")
 def create_room_view(request, *args, **kwargs):
     form = RoomForm()
     if request.method == "POST":
@@ -141,6 +150,20 @@ def profile_view(request, pk, *args, **kwargs):
     return render(request, "base/profile.html", context)
 
 @login_required(login_url="login")
+def create_profile_view(request, *args, **kwargs):
+    form = ProfileForm()
+    if request.method == "POST":
+        form = ProfileForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+        else:
+            messages.error(request, "An error occurred")
+            return redirect("create-profile")
+    context = {"form": form}
+    return render(request, "base/create_profile.html", context)
+
+@login_required(login_url="login")
 def edit_profile_view(request, pk, *args, **kwargs):
     profile = Profile.objects.get(id=pk)
     form = ProfileForm(instance=profile)
@@ -185,9 +208,10 @@ def register_view(request, *args, **kwargs):
             user.username = user.username.lower()
             user.save()
             login(request, user)
-            return redirect("home")
+            return redirect("create-profile")
         else:
             messages.error(request, "An error occurred")
+            return redirect("register")
     context = {"form": form}
     return render(request, "base/login.html", context)
 

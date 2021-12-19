@@ -3,8 +3,8 @@
 {% block content %}
 
 <div class="">
-  <h2>{{displays.name}}</h2>
-  <span>by {{display.host.username}}</span>  <small>{{display.created|timesince}} ago</small>
+  <h2>{{display.title|capfirst}}</h2>
+  <span>by {{display.host.username}}</span>  <small>since {{display.created|timesince}} ago</small>
   <p>{{display.blog|capfirst}}</p>
 </div>
 

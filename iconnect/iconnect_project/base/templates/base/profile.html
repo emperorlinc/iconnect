@@ -5,4 +5,5 @@
 <h1>{{profile.host.username|title}}({{profile.nickname|capfirst}})</h1>
 <p>{{profile.bio|capfirst}}<br>
 <a href="{% url 'edit-profile' profile.id %}">edit profile</a></p><hr>
+
 {% endblock content %}

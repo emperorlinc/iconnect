@@ -15,6 +15,7 @@ urlpatterns = [
     path("create_post", views.create_post_view, name="create-post"),
     path("create_room", views.create_room_view, name="create-room"),
     path("create_topic", views.create_topic_view, name="create-topic"),
+    path("create_profile", views.create_profile_view, name="create-profile"),
 
     path("edit_post/<str:pk>/", views.edit_post_view, name="edit-post"),
     path("edit_room/<str:pk>/", views.edit_room_view, name="edit-room"),
@@ -22,5 +23,6 @@ urlpatterns = [
     path("edit_message/<str:pk>/", views.edit_message_view, name="edit-message"),
 
     path("delete_post/<str:pk>/", views.delete_post_view, name="delete-post"),
+    path("delete_room/<str:pk>/", views.delete_room_view, name="delete-room"),
     path("delete_message/<str:pk>/", views.delete_message_view, name="delete-message"),
 ]

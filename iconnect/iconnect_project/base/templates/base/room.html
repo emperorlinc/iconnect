@@ -6,6 +6,7 @@
 <p>{{room.description|capfirst}}</p><br>
 {% if request.user == room.host %}
 <a href="{% url 'edit-room' room.id %}">edit room</a>
+<a href="{% url 'delete-room' room.id %}">delete room</a>
 {% endif %}
 <hr>
 <div class="comment-wrapper">
